@@ -4,17 +4,14 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.MockedStatic;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.PrintStream;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
-import static java.time.format.DateTimeFormatter.ofPattern;
 import static org.mockito.Mockito.*;
-import static org.upper.logger.LogLevel.*;
+import static org.upper.logger.LogLevel.ERROR;
+import static org.upper.logger.LogLevel.INFO;
 
 @ExtendWith(MockitoExtension.class)
 public class LoggerTest {
@@ -32,7 +29,7 @@ public class LoggerTest {
 
     @BeforeEach
     public void setUp() {
-        this.logger = new Logger(this.getClass(), WARNING);
+        this.logger = LoggerFactory.getInstance().createLogger(this.getClass());
     }
 
     @Test
@@ -41,13 +38,23 @@ public class LoggerTest {
         try (var localDateTimeMock = mockStatic(LocalDateTime.class)) {
             localDateTimeMock.when(LocalDateTime::now).thenReturn(dateTime);
 
+            LoggerFactory.getInstance().setLevel(INFO);
+
             logger.debug(message);
             logger.info(message);
             logger.warn(message);
             logger.error(message);
 
+            LoggerFactory.getInstance().setLevel(ERROR);
+
+            logger.debug(message);
+            logger.info(message);
+            logger.warn(message);
+            logger.error(message);
+
+            verify(printStream).println("[2023-05-17 14:09:20] [INFO] org.upper.logger.LoggerTest - any log message");
             verify(printStream).println("[2023-05-17 14:09:20] [WARNING] org.upper.logger.LoggerTest - any log message");
-            verify(printStream).println("[2023-05-17 14:09:20] [ERROR] org.upper.logger.LoggerTest - any log message");
+            verify(printStream, times(2)).println("[2023-05-17 14:09:20] [ERROR] org.upper.logger.LoggerTest - any log message");
 
             verifyNoMoreInteractions(printStream);
         }
