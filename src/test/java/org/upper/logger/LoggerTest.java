@@ -14,6 +14,7 @@ import java.time.format.DateTimeFormatter;
 
 import static java.time.format.DateTimeFormatter.ofPattern;
 import static org.mockito.Mockito.*;
+import static org.upper.logger.LogLevel.*;
 
 @ExtendWith(MockitoExtension.class)
 public class LoggerTest {
@@ -31,7 +32,7 @@ public class LoggerTest {
 
     @BeforeEach
     public void setUp() {
-        this.logger = new Logger(this.getClass());
+        this.logger = new Logger(this.getClass(), WARNING);
     }
 
     @Test
@@ -40,11 +41,13 @@ public class LoggerTest {
         try (var localDateTimeMock = mockStatic(LocalDateTime.class)) {
             localDateTimeMock.when(LocalDateTime::now).thenReturn(dateTime);
 
-            logger.log(message);
+            logger.log(DEBUG, message);
+            logger.log(INFO, message);
+            logger.log(WARNING, message);
+            logger.log(ERROR, message);
 
-            var expectedMessage = "[2023-05-17 14:09:20] org.upper.logger.LoggerTest - any log message";
-
-            verify(printStream).println(expectedMessage);
+            verify(printStream).println("[2023-05-17 14:09:20] [WARNING] org.upper.logger.LoggerTest - any log message");
+            verify(printStream).println("[2023-05-17 14:09:20] [ERROR] org.upper.logger.LoggerTest - any log message");
 
             verifyNoMoreInteractions(printStream);
         }
