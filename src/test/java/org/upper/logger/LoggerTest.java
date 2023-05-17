@@ -39,6 +39,11 @@ public class LoggerTest {
             localDateTimeMock.when(LocalDateTime::now).thenReturn(dateTime);
 
             LoggerFactory.getInstance().setLevel(INFO);
+            LoggerFactory.getInstance().setTargets(
+                    new LogTargetConsoleImpl(),
+                    new LogTargetEmailImpl(),
+                    new LogTargetFileSystemImpl()
+            );
 
             logger.debug(message);
             logger.info(message);
@@ -46,15 +51,26 @@ public class LoggerTest {
             logger.error(message);
 
             LoggerFactory.getInstance().setLevel(ERROR);
+            LoggerFactory.getInstance().setTargets(
+                    new LogTargetConsoleImpl(),
+                    new LogTargetFileSystemImpl()
+            );
 
             logger.debug(message);
             logger.info(message);
             logger.warn(message);
             logger.error(message);
 
-            verify(printStream).println("[2023-05-17 14:09:20] [INFO] org.upper.logger.LoggerTest - any log message");
-            verify(printStream).println("[2023-05-17 14:09:20] [WARNING] org.upper.logger.LoggerTest - any log message");
-            verify(printStream, times(2)).println("[2023-05-17 14:09:20] [ERROR] org.upper.logger.LoggerTest - any log message");
+
+            verify(printStream).println("[2023-05-17 14:09:20] [INFO] org.upper.logger.LoggerTest - any log message **** console ****");
+            verify(printStream).println("[2023-05-17 14:09:20] [INFO] org.upper.logger.LoggerTest - any log message **** email ****");
+            verify(printStream).println("[2023-05-17 14:09:20] [INFO] org.upper.logger.LoggerTest - any log message **** file system ****");
+            verify(printStream).println("[2023-05-17 14:09:20] [WARNING] org.upper.logger.LoggerTest - any log message **** console ****");
+            verify(printStream).println("[2023-05-17 14:09:20] [WARNING] org.upper.logger.LoggerTest - any log message **** email ****");
+            verify(printStream).println("[2023-05-17 14:09:20] [WARNING] org.upper.logger.LoggerTest - any log message **** file system ****");
+            verify(printStream, times(2)).println("[2023-05-17 14:09:20] [ERROR] org.upper.logger.LoggerTest - any log message **** console ****");
+            verify(printStream).println("[2023-05-17 14:09:20] [ERROR] org.upper.logger.LoggerTest - any log message **** email ****");
+            verify(printStream, times(2)).println("[2023-05-17 14:09:20] [ERROR] org.upper.logger.LoggerTest - any log message **** file system ****");
 
             verifyNoMoreInteractions(printStream);
         }

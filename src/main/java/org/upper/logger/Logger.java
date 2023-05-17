@@ -9,14 +9,16 @@ public class Logger {
 
     private final String name;
     private final LoggerContext logContext;
+    private final LogDispatcher logDispatcher;
 
-    Logger(String name, LoggerContext logContext) {
+    Logger(String name, LoggerContext logContext, LogDispatcher logDispatcher) {
         this.name = name == null ? "" : name;
         this.logContext = logContext;
+        this.logDispatcher = logDispatcher;
     }
 
-    Logger(Class<?> clazz, LoggerContext logContext) {
-        this(clazz.getName(), logContext);
+    Logger(Class<?> clazz, LoggerContext logContext, LogDispatcher logDispatcher) {
+        this(clazz.getName(), logContext, logDispatcher);
     }
 
     public void debug(String message) {
@@ -38,7 +40,7 @@ public class Logger {
     void log(LogLevel messageLevel, String message) {
         if (logContext.shouldLog(messageLevel)) {
             var finalMessage = createFinalMessage(message, messageLevel);
-            System.out.println(finalMessage);
+            logDispatcher.dispatch(finalMessage);
         }
     }
 

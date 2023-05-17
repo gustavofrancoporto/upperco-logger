@@ -6,9 +6,11 @@ public class LoggerFactory {
 
     private static volatile LoggerFactory singletonInstance;
     private final LoggerContext logContext;
+    private final LogDispatcher logDispatcher;
 
     private LoggerFactory() {
         logContext = new LoggerContext(DEBUG);
+        logDispatcher = new LogDispatcher();
     }
 
     public static LoggerFactory getInstance() {
@@ -19,15 +21,18 @@ public class LoggerFactory {
                 }
             }
         }
-
         return singletonInstance;
     }
 
     public Logger createLogger(Class<?> clazz) {
-        return new Logger(clazz, logContext);
+        return new Logger(clazz, logContext, logDispatcher);
     }
 
     public void setLevel(LogLevel level) {
         this.logContext.setLoggerLevel(level);
+    }
+
+    public void setTargets(LogTarget... targets) {
+        logDispatcher.setTargets(targets);
     }
 }
