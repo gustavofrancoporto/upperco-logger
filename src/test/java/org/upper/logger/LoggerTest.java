@@ -41,10 +41,10 @@ public class LoggerTest {
         try (var localDateTimeMock = mockStatic(LocalDateTime.class)) {
             localDateTimeMock.when(LocalDateTime::now).thenReturn(dateTime);
 
-            logger.log(DEBUG, message);
-            logger.log(INFO, message);
-            logger.log(WARNING, message);
-            logger.log(ERROR, message);
+            logger.debug(message);
+            logger.info(message);
+            logger.warn(message);
+            logger.error(message);
 
             verify(printStream).println("[2023-05-17 14:09:20] [WARNING] org.upper.logger.LoggerTest - any log message");
             verify(printStream).println("[2023-05-17 14:09:20] [ERROR] org.upper.logger.LoggerTest - any log message");

@@ -3,7 +3,7 @@ package org.upper.logger;
 
 import java.time.LocalDateTime;
 
-import static org.upper.logger.LogLevel.DEBUG;
+import static org.upper.logger.LogLevel.*;
 
 public class Logger {
 
@@ -23,7 +23,23 @@ public class Logger {
         this(clazz.getName(), level);
     }
 
-    public void log(LogLevel messageLevel, String message) {
+    public void debug(String message) {
+        log(DEBUG, message);
+    }
+
+    public void info(String message) {
+        log(INFO, message);
+    }
+
+    public void warn(String message) {
+        log(WARNING, message);
+    }
+
+    public void error(String message) {
+        log(ERROR, message);
+    }
+
+    void log(LogLevel messageLevel, String message) {
         if (loggerLevel.shouldLog(messageLevel)) {
             var finalMessage = createFinalMessage(message, messageLevel);
             System.out.println(finalMessage);
