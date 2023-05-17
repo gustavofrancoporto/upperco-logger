@@ -1,9 +1,13 @@
 package org.upper.logger;
 
-public class LogTargetConsoleImpl implements LogTarget {
+public class LogTargetConsoleImpl extends LogTarget {
+
+    public LogTargetConsoleImpl(LogLevel level) {
+        super(level);
+    }
 
     @Override
-    public void log(String message) {
+    protected void doLog(String message) {
         System.out.println(message + " **** console ****");
     }
 }

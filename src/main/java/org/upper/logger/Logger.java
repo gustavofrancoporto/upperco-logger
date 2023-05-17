@@ -8,17 +8,15 @@ import static org.upper.logger.LogLevel.*;
 public class Logger {
 
     private final String name;
-    private final LoggerContext logContext;
     private final LogDispatcher logDispatcher;
 
-    Logger(String name, LoggerContext logContext, LogDispatcher logDispatcher) {
+    Logger(String name, LogDispatcher logDispatcher) {
         this.name = name == null ? "" : name;
-        this.logContext = logContext;
         this.logDispatcher = logDispatcher;
     }
 
-    Logger(Class<?> clazz, LoggerContext logContext, LogDispatcher logDispatcher) {
-        this(clazz.getName(), logContext, logDispatcher);
+    Logger(Class<?> clazz, LogDispatcher logDispatcher) {
+        this(clazz.getName(), logDispatcher);
     }
 
     public void debug(String message) {
@@ -38,10 +36,8 @@ public class Logger {
     }
 
     void log(LogLevel messageLevel, String message) {
-        if (logContext.shouldLog(messageLevel)) {
-            var finalMessage = createFinalMessage(message, messageLevel);
-            logDispatcher.dispatch(finalMessage);
-        }
+        var finalMessage = createFinalMessage(message, messageLevel);
+        logDispatcher.dispatch(messageLevel, finalMessage);
     }
 
     String createFinalMessage(String message, LogLevel messageLevel) {

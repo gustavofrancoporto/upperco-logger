@@ -5,11 +5,9 @@ import static org.upper.logger.LogLevel.DEBUG;
 public class LoggerFactory {
 
     private static volatile LoggerFactory singletonInstance;
-    private final LoggerContext logContext;
     private final LogDispatcher logDispatcher;
 
     private LoggerFactory() {
-        logContext = new LoggerContext(DEBUG);
         logDispatcher = new LogDispatcher();
     }
 
@@ -25,11 +23,11 @@ public class LoggerFactory {
     }
 
     public Logger createLogger(Class<?> clazz) {
-        return new Logger(clazz, logContext, logDispatcher);
+        return new Logger(clazz, logDispatcher);
     }
 
-    public void setLevel(LogLevel level) {
-        this.logContext.setLoggerLevel(level);
+    public void setLevel(Class<? extends LogTarget> targetClass, LogLevel level) {
+        this.logDispatcher.setLevel(targetClass, level);
     }
 
     public void setTargets(LogTarget... targets) {

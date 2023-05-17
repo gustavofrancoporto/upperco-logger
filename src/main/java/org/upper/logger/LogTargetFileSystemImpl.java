@@ -1,9 +1,13 @@
 package org.upper.logger;
 
-public class LogTargetFileSystemImpl implements LogTarget {
+public class LogTargetFileSystemImpl extends LogTarget {
+
+    public LogTargetFileSystemImpl(LogLevel level) {
+        super(level);
+    }
 
     @Override
-    public void log(String message) {
+    protected void doLog(String message) {
         System.out.println(message + " **** file system ****");
     }
 }

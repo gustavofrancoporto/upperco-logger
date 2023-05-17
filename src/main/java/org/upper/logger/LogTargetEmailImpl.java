@@ -1,9 +1,13 @@
 package org.upper.logger;
 
-public class LogTargetEmailImpl implements LogTarget {
+public class LogTargetEmailImpl extends LogTarget {
+
+    public LogTargetEmailImpl(LogLevel level) {
+        super(level);
+    }
 
     @Override
-    public void log(String message) {
+    protected void doLog(String message) {
         System.out.println(message + " **** email ****");
     }
 }
