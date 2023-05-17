@@ -5,7 +5,7 @@ import java.util.List;
 
 import static java.util.Arrays.stream;
 
-public class LogDispatcher {
+public class LogDispatcher implements ILogDispatcher {
 
     private List<LogTarget> targets;
 

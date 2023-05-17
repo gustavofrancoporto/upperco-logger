@@ -6,14 +6,14 @@ import static org.upper.logger.LogLevel.*;
 public class Logger {
 
     private final String name;
-    private final LogDispatcher logDispatcher;
+    private final ILogDispatcher logDispatcher;
 
-    Logger(String name, LogDispatcher logDispatcher) {
+    Logger(String name, ILogDispatcher logDispatcher) {
         this.name = name == null ? "" : name;
         this.logDispatcher = logDispatcher;
     }
 
-    Logger(Class<?> clazz, LogDispatcher logDispatcher) {
+    Logger(Class<?> clazz, ILogDispatcher logDispatcher) {
         this(clazz.getName(), logDispatcher);
     }
 
