@@ -1,8 +1,6 @@
 package org.upper.logger;
 
 
-import java.time.LocalDateTime;
-
 import static org.upper.logger.LogLevel.*;
 
 public class Logger {
@@ -36,15 +34,7 @@ public class Logger {
     }
 
     void log(LogLevel messageLevel, String message) {
-        var finalMessage = createFinalMessage(message, messageLevel);
-        logDispatcher.dispatch(messageLevel, finalMessage);
-    }
-
-    String createFinalMessage(String message, LogLevel messageLevel) {
-        return String.format("[%1$tF %1$tT] [%2$s] %3$s - %4$s",
-                LocalDateTime.now(),
-                messageLevel,
-                name.isEmpty() ? "" : name,
-                message);
+        var logMessage = new LogMessage(name, message, messageLevel);
+        logDispatcher.dispatch(logMessage);
     }
 }

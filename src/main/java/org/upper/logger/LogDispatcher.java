@@ -13,12 +13,12 @@ public class LogDispatcher {
         targets = new ArrayList<>();
     }
 
-    public void dispatch(LogLevel level, String message) {
+    public void dispatch(LogMessage logMessage) {
         if (targets.isEmpty()) {
             throw new IllegalStateException("No log targets were configured");
         }
 
-        targets.forEach(t -> t.log(level, message));
+        targets.forEach(t -> t.log(logMessage));
     }
 
     public void setTargets(LogTarget[] targets) {

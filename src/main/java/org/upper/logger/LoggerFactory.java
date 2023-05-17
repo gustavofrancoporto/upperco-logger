@@ -1,7 +1,5 @@
 package org.upper.logger;
 
-import static org.upper.logger.LogLevel.DEBUG;
-
 public class LoggerFactory {
 
     private static volatile LoggerFactory singletonInstance;

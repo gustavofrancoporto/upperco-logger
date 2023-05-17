@@ -8,9 +8,9 @@ public abstract class LogTarget {
         this.level = level;
     }
 
-    public void log(LogLevel messageLevel, String message) {
-        if (level.shouldLog(messageLevel)) {
-            doLog(message);
+    public void log(LogMessage logMessage) {
+        if (level.shouldLog(logMessage.getLevel())) {
+            doLog(logMessage.getFormattedMessage());
         }
     }
 
