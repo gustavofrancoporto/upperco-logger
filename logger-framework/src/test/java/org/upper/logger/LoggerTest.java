@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 
 import static org.mockito.Mockito.*;
 import static org.upper.logger.LogLevel.*;
+import static org.upper.logger.LoggerFactory.loggerFactoryConfigurer;
 
 @ExtendWith(MockitoExtension.class)
 public class LoggerTest {
@@ -37,11 +38,11 @@ public class LoggerTest {
         try (var localDateTimeMock = mockStatic(LocalDateTime.class)) {
             localDateTimeMock.when(LocalDateTime::now).thenReturn(dateTime);
 
-            LoggerFactory.getInstance().setTargets(
-                    new LogTargetConsoleImpl(DEBUG),
-                    new LogTargetFileSystemImpl(INFO),
-                    new LogTargetEmailImpl(WARNING)
-            );
+            loggerFactoryConfigurer()
+                    .addConsoleTarget(DEBUG)
+                    .addFileSystemTarget(INFO)
+                    .addEmailTarget(WARNING)
+                    .configure();
 
             logger.debug(message);
             logger.info(message);

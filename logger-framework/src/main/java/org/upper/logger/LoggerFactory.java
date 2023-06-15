@@ -1,5 +1,7 @@
 package org.upper.logger;
 
+import java.util.List;
+
 public class LoggerFactory {
 
     private static volatile LoggerFactory singletonInstance;
@@ -28,7 +30,11 @@ public class LoggerFactory {
         this.logDispatcher.setLevel(targetClass, level);
     }
 
-    public void setTargets(LogTarget... targets) {
+    public void setTargets(List<LogTarget> targets) {
         logDispatcher.setTargets(targets);
+    }
+
+    public static LoggerFactoryConfigurer loggerFactoryConfigurer() {
+        return new LoggerFactoryConfigurer();
     }
 }

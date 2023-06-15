@@ -3,8 +3,6 @@ package org.upper.logger;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.util.Arrays.stream;
-
 public class LogDispatcher implements ILogDispatcher {
 
     private List<LogTarget> targets;
@@ -21,8 +19,8 @@ public class LogDispatcher implements ILogDispatcher {
         targets.forEach(t -> t.log(logMessage));
     }
 
-    public void setTargets(LogTarget[] targets) {
-        this.targets = stream(targets).toList();
+    public void setTargets(List<LogTarget> targets) {
+        this.targets = targets;
     }
 
     public void setLevel(Class<? extends LogTarget> targetClass, LogLevel level) {
